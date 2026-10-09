@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Mobile / TikTok Minis friendly viewport: no zoom, no scroll, portrait -->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="theme-color" content="#241a15" />
+
+  <title>Gelato Rush - Game On The Wall</title>
+  <meta name="author" content="Game On The Wall" />
+
+  <!-- Structured data: developer / publisher branding -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Gelato Rush",
+    "author": {
+      "@type": "Organization",
+      "name": "Game On The Wall"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Game On The Wall"
+    },
+    "applicationCategory": "Game",
+    "operatingSystem": "Web"
+  }
+  </script>
+
+  <!-- Pixel font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Reset + lock the page so the game owns the whole viewport. */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #241a15;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      overscroll-behavior: none;
+    }
+
+    #game {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #game canvas {
+      display: block;
+      touch-action: none;
+      outline: none;
+    }
+
+    /* Lightweight HTML boot screen. pointer-events:none so it never eats taps. */
+    #boot {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      background: radial-gradient(circle at 50% 35%, #4a342a 0%, #241a15 70%);
+      color: #e8c98a;
+      font-family: "Press Start 2P", monospace;
+      font-size: 20px;
+      line-height: 1.8;
+      letter-spacing: 2px;
+      z-index: 5;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      text-align: center;
+    }
+
+    #boot .dot {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #d9b573;
+      box-shadow: 0 0 26px #d9b573;
+      animation: pulse 0.9s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.7); opacity: 0.55; }
+      50%      { transform: scale(1.0); opacity: 1; }
+    }
+
+    /* Developer attribution footer (tap-through-safe). */
+    #dev-credit {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+      text-align: center;
+      font-family: "Press Start 2P", monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      letter-spacing: 1px;
+      color: #f6ecd6;
+      background: rgba(28, 18, 12, 0.75);
+      text-shadow: 0 1px 0 #000, 0 0 8px rgba(0, 0, 0, 0.8);
+      z-index: 6;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="game"></div>
+
+  <!-- Developer attribution -->
+  <footer id="dev-credit">Developed &amp; Published by Game On The Wall</footer>
+
+  <div id="boot">
+    <div class="dot"></div>
+    <div>GELATO RUSH</div>
+  </div>
+
+  <!-- Phaser 3 (UMD build) must load before game.js -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+  <!-- Game code -->
+  <script src="game.js"></script>
+
+  <script>
+    window.addEventListener('load', function () {
+      var boot = document.getElementById('boot');
+      if (!boot) return;
+      setTimeout(function () {
+        boot.style.opacity = '0';
+        setTimeout(function () { boot.remove(); }, 400);
+      }, 250);
+    });
+  </script>
+</body>
+</html>
